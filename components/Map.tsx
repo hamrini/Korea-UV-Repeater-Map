@@ -6,22 +6,23 @@ import React from "react";
 import { GeoJSON as GeoJSONLayer, MapContainer, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import 'react-leaflet-markercluster/dist/styles.min.css'; // sass
-import csvdata from '../data/repeater.csv';
 
 const csv2geojson = require('csv2geojson');
 
 const Map = () => {
-
     const [geojson, setGeojson] = React.useState<GeoJsonObject | undefined>(undefined);
     React.useEffect(() => {
-        if (csvdata) {
-            csv2geojson.csv2geojson(csvdata, function (err: any, data: any) {
+        fetch('data/repeater.csv').then(async res => {
+            const csvdata = await res.text();
+            if (csvdata) {
+                csv2geojson.csv2geojson(csvdata, function (err: any, data: any) {
+                    if (err) console.error(err)
+                    setGeojson(data);
+                });
+            }
+        });
 
-                if (err) console.error(err)
-                setGeojson(data);
-            });
-        }
-    }, [csvdata])
+    }, [])
 
 
 
@@ -39,6 +40,7 @@ const Map = () => {
 
     const BindPopup = (feature: Feature) => {
         const { properties } = feature;
+        if (properties === undefined || properties === null) return '';
         const keys = Object.keys(properties);
         const htmltrs = keys.map(key => properties[key] ? `<tr><td>${key}</td><td>${properties[key]}</td></tr>` : undefined);
         return `<table>${htmltrs.join('')}</table>`
