@@ -16,9 +16,7 @@ const Map = () => {
             const csvdata = await res.text();
             if (csvdata) {
                 const geojson = csvToGeojson(csvdata)
-
                 setGeojson(geojson);
-
             }
         });
 
@@ -47,7 +45,7 @@ const Map = () => {
     }
 
     return (
-        <MapContainer center={[37.4355672, 126.9388092]} zoom={14} scrollWheelZoom={true} style={{ height: "100%", width: "100%" }}>
+        <MapContainer center={[37.4355672, 126.9388092]} zoom={6} scrollWheelZoom={true} style={{ height: "100%", width: "100%" }}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
