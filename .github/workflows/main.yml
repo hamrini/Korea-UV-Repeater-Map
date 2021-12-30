@@ -30,7 +30,8 @@ jobs:
       run: |
         npm install
         npm run build
-        node ./node_modules/.bin/next export && touch out/.nojekyll
+        npm run export
+        touch out/.nojekyll
       env:
         NODE_ENV: production
         
