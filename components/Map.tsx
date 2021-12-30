@@ -7,7 +7,7 @@ import { GeoJSON as GeoJSONLayer, MapContainer, TileLayer } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import 'react-leaflet-markercluster/dist/styles.min.css'; // sass
 
-const csv2geojson = require('csv2geojson');
+import csvToGeojson from 'csv-geojson-conv'
 
 const Map = () => {
     const [geojson, setGeojson] = React.useState<GeoJsonObject | undefined>(undefined);
@@ -15,10 +15,10 @@ const Map = () => {
         fetch('data/repeater.csv').then(async res => {
             const csvdata = await res.text();
             if (csvdata) {
-                csv2geojson.csv2geojson(csvdata, function (err: any, data: any) {
-                    if (err) console.error(err)
-                    setGeojson(data);
-                });
+                const geojson = csvToGeojson(csvdata)
+
+                setGeojson(geojson);
+
             }
         });
 
