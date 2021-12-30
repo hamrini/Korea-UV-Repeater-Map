@@ -5,7 +5,7 @@ const prod = process.env.NODE_ENV === 'production';
 /** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
-  assetPrefix: prod?'Korea-UV-Repeater-Map':'',
+  assetPrefix: prod?'/Korea-UV-Repeater-Map/':'',
   webpack: (config, options) => {
     config.module.rules.push({
         test: /\.csv$/,
