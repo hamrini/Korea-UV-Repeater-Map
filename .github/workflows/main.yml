@@ -28,9 +28,8 @@ jobs:
         cache: 'npm'
     - name: Build
       run: |
-        yarn install
-        rm -rf node_modules/.cache
-        yarn next build && yarn next export && touch out/.nojekyll
+        npm install
+        npm run next build && npm run next export && touch out/.nojekyll
       env:
         NODE_ENV: production
         
