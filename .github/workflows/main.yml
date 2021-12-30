@@ -31,6 +31,8 @@ jobs:
         yarn install
         rm -rf node_modules/.cache
         yarn next build && yarn next export && touch out/.nojekyll
+      env:
+        NODE_ENV: production
         
     - name: Deploy with gh-pages
       run: |
