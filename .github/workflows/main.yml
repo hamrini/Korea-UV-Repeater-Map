@@ -28,12 +28,12 @@ jobs:
 #        cache: 'npm'
     - name: Build
       run: |
+        export NODE_ENV=production
         npm install
         npm run build
         npm run export
         touch out/.nojekyll
-      env:
-        NODE_ENV: production
+
         
     - name: Deploy with gh-pages
       run: |
