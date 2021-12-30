@@ -29,7 +29,8 @@ jobs:
     - name: Build
       run: |
         yarn install
-        rm -rf node_modules/.cache && next build && next export && touch out/.nojekyll
+        rm -rf node_modules/.cache
+        yarn next build && yarn next export && touch out/.nojekyll
         
     - name: Deploy with gh-pages
       run: |
