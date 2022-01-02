@@ -6,6 +6,7 @@ import { alpha, styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import SearchIcon from '@mui/icons-material/Search';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -71,7 +72,7 @@ export default function SearchAppBar() {
                 >
                     Korean Amateur Radio UV Repeater Map
                 </Typography>
-                {/* <Search>
+                <Search>
                     <SearchIconWrapper>
                         <SearchIcon />
                     </SearchIconWrapper>
@@ -79,7 +80,7 @@ export default function SearchAppBar() {
                         placeholder="Search…"
                         inputProps={{ 'aria-label': 'search' }}
                     />
-                </Search> */}
+                </Search>
             </Toolbar>
         </AppBar>
     );

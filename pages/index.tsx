@@ -6,9 +6,8 @@ import SearchAppBar from 'components/SearchAppBar'
 import styles from 'styles/Home.module.css'
 
 const Home: NextPage = () => {
-  const MapWithNoSSR = dynamic(() => import("../components/Map"), {
-    ssr: false
-  });
+  const MapWithNoSSR = dynamic(() => import("components/Map"), {ssr: false});
+  const OlMapWithNoSSR = dynamic(()=> import("components/OlMap"), {ssr:false});
 
   return (
     <div className={styles.container}>
@@ -29,7 +28,7 @@ const Home: NextPage = () => {
           <SearchAppBar />
           <Box sx={{ flexGrow: 1, display: 'flex' }} >
             <Box sx={{ flexGrow: 1 }}>
-              <MapWithNoSSR />
+              <OlMapWithNoSSR />
             </Box>
           </Box>
         </Box>
