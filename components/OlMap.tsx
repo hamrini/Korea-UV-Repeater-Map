@@ -113,7 +113,7 @@ const OlMap = () => {
             positionFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
         });
 
-        var map: ol.Map = new ol.Map({
+        var olmap: ol.Map = new ol.Map({
             target: 'map',
 
             layers: [
@@ -132,7 +132,6 @@ const OlMap = () => {
                     })
                 }),
                 new VectorLayer({
-                    map: map,
                     source: new VectorSource({
                         features: [accuracyFeature, positionFeature],
                     }),
@@ -142,7 +141,7 @@ const OlMap = () => {
             view
         });
 
-        setMap(map)
+        setMap(olmap)
 
         fetch('data/repeater.csv').then(async res => {
             const csvdata = await res.text();
