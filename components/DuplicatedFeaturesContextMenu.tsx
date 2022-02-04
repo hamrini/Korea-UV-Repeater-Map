@@ -36,12 +36,12 @@ export const DucplatedFeatureContextMenu = ({ contextMenu, setContextMenu, conte
             <MenuItem
               key={idx}
               onClick={() => {
-                const { projectId, detectionId, row } = feature;
-                if (projectId && detectionId && row) {
-                  // setDetailProperties({ projectId, detectionId, row });
-                  // setDetailViewOpen(true);
-                  setContextMenu(null);
-                }
+                //const { projectId, detectionId, row } = feature;
+                //if (projectId && detectionId && row) {
+                // setDetailProperties({ projectId, detectionId, row });
+                // setDetailViewOpen(true);
+                setContextMenu(null);
+                //}
               }}
             >
               <ListItemText primary={`${feature.Name} (CallSign: ${feature.Callsign})`} secondary={`Tx:${feature.Tx}, Rx:${feature.Rx}, Tone: ${feature.Tone}`} />

@@ -165,7 +165,7 @@ const OlMap = () => {
 
             if (layerGroupRepeater)
                 layerGroupRepeater.getLayers().push(vectorLayerRepeater);
-                
+
             // select interaction working on "click"
             const selectClick = new Select({
                 condition: click,
@@ -178,7 +178,7 @@ const OlMap = () => {
 
                 if (e.selected.length > 0) {
                     const [mouseX, mouseY] = e.mapBrowserEvent.pixel;
-                    const arr = [];
+                    const arr: DuplicatedFeaturesContextData[] = [];
                     const featuresData = e.selected.forEach((selectedFeature) => {
                         arr.push(...selectedFeature.getProperties().features.map((feature: any) => feature.getProperties()))
 
