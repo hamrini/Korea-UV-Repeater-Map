@@ -33,7 +33,7 @@ import RepeaterDialog from './RepeaterDialog';
 const OlMap = () => {
     const [dialogInfo, setDialogInfo] = React.useState<{ open: boolean, repeaterInfo?: RepeaterInfoData }>({ open: false, repeaterInfo: undefined });
     const [map, setMap] = React.useState<ol.Map>();
-    const [geojson, setGeojson] = React.useState<FeatureCollection | undefined>(undefined);
+    const [geojson, setGeojson] = React.useState<FeatureCollection<GeoPoint> | undefined>(undefined);
     const [contextMenuFeaturesData, setContextMenuFeaturesData] = React.useState<RepeaterInfoData[]>([]);
     const [contextMenu, setContextMenu] = React.useState<{ mouseX: number; mouseY: number } | null>(null);
     const [layerGroupRepeater, setLayerGroupRepeater] = React.useState<LayerGroup>();
