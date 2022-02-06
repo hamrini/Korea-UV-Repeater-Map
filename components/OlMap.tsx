@@ -1,5 +1,5 @@
 import csvToGeojson from 'csv-geojson-conv';
-import { GeoJsonObject, Point as GeoPoint, FeatureCollection } from "geojson";
+import { GeoJsonObject, Point as GeoPoint, LineString as GeoPolyline, FeatureCollection } from "geojson";
 import * as ol from 'ol';
 import LayerSwitcher, {
     BaseLayerOptions,
@@ -33,7 +33,9 @@ import RepeaterDialog from './RepeaterDialog';
 const OlMap = () => {
     const [dialogInfo, setDialogInfo] = React.useState<{ open: boolean, repeaterInfo?: RepeaterInfoData }>({ open: false, repeaterInfo: undefined });
     const [map, setMap] = React.useState<ol.Map>();
-    const [geojson, setGeojson] = React.useState<FeatureCollection<GeoPoint> | undefined>(undefined);
+    const [pointGeojson, setPointGeojson] = React.useState<FeatureCollection<GeoPoint> | undefined>(undefined);
+    const [polylineGeojson, setPolylineGeojson] = React.useState<FeatureCollection<GeoPolyline> | undefined>(undefined);
+
     const [contextMenuFeaturesData, setContextMenuFeaturesData] = React.useState<RepeaterInfoData[]>([]);
     const [contextMenu, setContextMenu] = React.useState<{ mouseX: number; mouseY: number } | null>(null);
     const [layerGroupRepeater, setLayerGroupRepeater] = React.useState<LayerGroup>();
@@ -163,16 +165,43 @@ const OlMap = () => {
             const csvdata = await res.text();
             if (csvdata) {
                 const geojson: FeatureCollection<GeoPoint> = csvToGeojson(csvdata) as FeatureCollection<GeoPoint>
-                setGeojson(geojson);
+                setPointGeojson(geojson);
             }
         });
+        fetch('data/wa_link.json').then(async res => {
+            const jsondata = await res.json();
+            if (jsondata) {
+                setPolylineGeojson(jsondata)
+
+            }
+
+        })
 
     }, [])
 
     React.useEffect(() => {
-        if (map && geojson) {
-            const newGeojson = { ...geojson };
-            const newGeojsonWideArea = { ...geojson };
+        if (map && polylineGeojson && polylineGeojson.features) {
+            const source = new VectorSource({
+                features: new GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: "EPSG:3857" }).readFeatures(polylineGeojson)
+            });
+            const layer = new VectorLayer({
+                source: source,
+                style: new Style({
+                    stroke: new Stroke({
+                        color: '#ff3333',
+                        width: 3,
+                    }),
+                })
+            });
+            if (layerGroupRepeaterWideArea) {
+                layerGroupRepeaterWideArea.getLayers().push(layer);
+            }
+        }
+    });
+    React.useEffect(() => {
+        if (map && pointGeojson) {
+            const newGeojson = { ...pointGeojson };
+            const newGeojsonWideArea = { ...pointGeojson };
 
             if (newGeojson.features !== undefined) {
                 newGeojson.features = newGeojson.features.filter(feature => (feature?.properties?.Type !== '광역망'));
@@ -258,7 +287,7 @@ const OlMap = () => {
             selectClick.on('select', callbackSelectHandler);
 
         }
-    }, [map, geojson])
+    }, [map, pointGeojson])
 
     const setRepeaterInfo = (repeaterInfo: RepeaterInfoData) => {
         setDialogInfo({ open: true, repeaterInfo })
