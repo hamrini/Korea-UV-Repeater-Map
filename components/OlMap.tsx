@@ -31,7 +31,7 @@ import RepeaterDialog from './RepeaterDialog';
 
 
 const OlMap = () => {
-    const [dialogInfo, setDialogInfo] = React.useState<{ open: boolean, repeaterInfo?: RepeaterInfoData }>({ open: false, reapeaterInfo: undefined });
+    const [dialogInfo, setDialogInfo] = React.useState<{ open: boolean, repeaterInfo?: RepeaterInfoData }>({ open: false, repeaterInfo: undefined });
     const [map, setMap] = React.useState<ol.Map>();
     const [geojson, setGeojson] = React.useState<GeoJsonObject | undefined>(undefined);
     const [contextMenuFeaturesData, setContextMenuFeaturesData] = React.useState<RepeaterInfoData[]>([]);
@@ -185,7 +185,7 @@ const OlMap = () => {
                     const featuresData = e.selected.forEach((selectedFeature) => {
                         arr.push(...selectedFeature.getProperties().features.map((feature: any) => feature.getProperties()))
 
-                    });debugger
+                    }); debugger
                     e.preventDefault();
                     setContextMenuFeaturesData(arr);
                     setContextMenu(
