@@ -162,7 +162,7 @@ const OlMap = () => {
         fetch('data/repeater.csv').then(async res => {
             const csvdata = await res.text();
             if (csvdata) {
-                const geojson = csvToGeojson(csvdata)
+                const geojson: FeatureCollection<GeoPoint> = csvToGeojson(csvdata) as FeatureCollection<GeoPoint>
                 setGeojson(geojson);
             }
         });
