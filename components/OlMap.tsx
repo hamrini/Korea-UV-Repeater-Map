@@ -1,5 +1,5 @@
 import csvToGeojson from 'csv-geojson-conv';
-import { GeoJsonObject } from "geojson";
+import { GeoJsonObject, Point as GeoPoint, FeatureCollection } from "geojson";
 import * as ol from 'ol';
 import LayerSwitcher, {
     BaseLayerOptions,
@@ -9,7 +9,7 @@ import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 import * as OLControls from 'ol/control';
 import { click } from 'ol/events/condition';
 import Feature from 'ol/Feature';
-import GeoJSON from "ol/format/GeoJSON";
+import GeoJSON, { GeoJSONFeatureCollection } from "ol/format/GeoJSON";
 import Geolocation from 'ol/Geolocation';
 import { Geometry, Point, Polygon } from 'ol/geom';
 import Select, { SelectEvent } from 'ol/interaction/Select';
@@ -24,7 +24,7 @@ import { Fill, Stroke, Style } from "ol/style";
 import CircleStyle from 'ol/style/Circle';
 import React from "react";
 import { DucplatedFeatureContextMenu, RepeaterInfoData } from './DuplicatedFeaturesContextMenu';
-import { PointStyle, selectStyle } from './OlStyles';
+import { PointStyle, PointWAStyle, selectStyle } from './OlStyles';
 import RepeaterDialog from './RepeaterDialog';
 
 
@@ -33,7 +33,7 @@ import RepeaterDialog from './RepeaterDialog';
 const OlMap = () => {
     const [dialogInfo, setDialogInfo] = React.useState<{ open: boolean, repeaterInfo?: RepeaterInfoData }>({ open: false, repeaterInfo: undefined });
     const [map, setMap] = React.useState<ol.Map>();
-    const [geojson, setGeojson] = React.useState<GeoJsonObject | undefined>(undefined);
+    const [geojson, setGeojson] = React.useState<FeatureCollection | undefined>(undefined);
     const [contextMenuFeaturesData, setContextMenuFeaturesData] = React.useState<RepeaterInfoData[]>([]);
     const [contextMenu, setContextMenu] = React.useState<{ mouseX: number; mouseY: number } | null>(null);
     const [layerGroupRepeater, setLayerGroupRepeater] = React.useState<LayerGroup>();
@@ -154,24 +154,47 @@ const OlMap = () => {
 
     React.useEffect(() => {
         if (map && geojson) {
+            const newGeojson = { ...geojson };
+            const newGeojsonWideArea = { ...geojson };
+
+            if (newGeojson.features !== undefined) {
+                newGeojson.features = newGeojson.features.filter(feature => (feature?.properties?.Type !== '광역망'));
+            }
+            if (newGeojsonWideArea.features !== undefined) {
+                newGeojsonWideArea.features = newGeojsonWideArea.features.filter(feature => (feature?.properties?.Type === '광역망'));
+            }
+
+
             const vectorLayerRepeater = new VectorLayer({
                 source: new Cluster({
                     source:
                         new VectorSource({
-                            features: new GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).readFeatures(geojson)
+                            features: new GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).readFeatures(newGeojson)
                         }),
 
                 }),
                 style: PointStyle
             })
+            const vectorLayerRepeaterWideArea = new VectorLayer({
 
-            if (layerGroupRepeater)
+                source:
+                    new VectorSource({
+                        features: new GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).readFeatures(newGeojsonWideArea)
+                    }),
+
+                style: PointWAStyle
+            })
+
+            if (layerGroupRepeater) {
                 layerGroupRepeater.getLayers().push(vectorLayerRepeater);
+                layerGroupRepeater.getLayers().push(vectorLayerRepeaterWideArea);
+            }
+
 
             // select interaction working on "click"
             const selectClick = new Select({
                 condition: click,
-                layers: [vectorLayerRepeater],
+                layers: [vectorLayerRepeater, vectorLayerRepeaterWideArea],
                 multi: true,
                 hitTolerance: 10,
                 style: selectStyle,
@@ -183,7 +206,16 @@ const OlMap = () => {
                     const [mouseX, mouseY] = e.mapBrowserEvent.pixel;
                     const arr: RepeaterInfoData[] = [];
                     const featuresData = e.selected.forEach((selectedFeature) => {
-                        arr.push(...selectedFeature.getProperties().features.map((feature: any) => feature.getProperties()))
+                        if (selectedFeature.getProperties().features !== undefined) {
+                            arr.push(...selectedFeature.getProperties().features.map((feature: any) => feature.getProperties()))
+                        } else {
+                            if (selectedFeature.length > 0) {
+                                arr.push(...selectedFeature.map((feature: any) => feature.getProperties()))
+                            } else {
+                                arr.push(selectedFeature.getProperties())
+                            }
+
+                        }
 
                     }); debugger
                     e.preventDefault();
