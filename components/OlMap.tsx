@@ -37,6 +37,9 @@ const OlMap = () => {
     const [contextMenuFeaturesData, setContextMenuFeaturesData] = React.useState<RepeaterInfoData[]>([]);
     const [contextMenu, setContextMenu] = React.useState<{ mouseX: number; mouseY: number } | null>(null);
     const [layerGroupRepeater, setLayerGroupRepeater] = React.useState<LayerGroup>();
+    const [layerGroupRepeaterWideArea, setLayerGroupRepeaterWideArea] = React.useState<LayerGroup>();
+
+
     React.useEffect(() => {
         const view = new ol.View({
             center: fromLonLat([126.9388092, 37.4355672]),
@@ -84,12 +87,20 @@ const OlMap = () => {
             zIndex: 1000
         })
         const LGRepeater = new LayerGroup({
-            'title': '중계기',
+            'title': '지역망 중계기',
+            layers: [
+
+            ]
+        } as GroupLayerOptions)
+        const LGRepeaterWideArea = new LayerGroup({
+            'title': '광역망 중계기',
             layers: [
 
             ]
         } as GroupLayerOptions)
         setLayerGroupRepeater(LGRepeater);
+        setLayerGroupRepeaterWideArea(LGRepeaterWideArea);
+
 
         var olmap: ol.Map = new ol.Map({
             target: 'map',
@@ -124,7 +135,13 @@ const OlMap = () => {
                         positionLayer
                     ]
                 } as GroupLayerOptions),
-                LGRepeater
+                new LayerGroup({
+                    'title': '중계기',
+                    layers: [
+                        LGRepeater,
+                        LGRepeaterWideArea
+                    ]
+                } as GroupLayerOptions),
 
             ], view
         });
@@ -187,7 +204,10 @@ const OlMap = () => {
 
             if (layerGroupRepeater) {
                 layerGroupRepeater.getLayers().push(vectorLayerRepeater);
-                layerGroupRepeater.getLayers().push(vectorLayerRepeaterWideArea);
+            }
+
+            if (layerGroupRepeaterWideArea) {
+                layerGroupRepeaterWideArea.getLayers().push(vectorLayerRepeaterWideArea);
             }
 
 
