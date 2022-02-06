@@ -23,16 +23,18 @@ import VectorSource from "ol/source/Vector";
 import { Fill, Stroke, Style } from "ol/style";
 import CircleStyle from 'ol/style/Circle';
 import React from "react";
-import { DucplatedFeatureContextMenu, DuplicatedFeaturesContextData } from './DuplicatedFeaturesContextMenu';
+import { DucplatedFeatureContextMenu, RepeaterInfoData } from './DuplicatedFeaturesContextMenu';
 import { PointStyle, selectStyle } from './OlStyles';
+import RepeaterDialog from './RepeaterDialog';
 
 
 
 
 const OlMap = () => {
+    const [dialogInfo, setDialogInfo] = React.useState<{ open: boolean, repeaterInfo?: RepeaterInfoData }>({ open: false, reapeaterInfo: undefined });
     const [map, setMap] = React.useState<ol.Map>();
     const [geojson, setGeojson] = React.useState<GeoJsonObject | undefined>(undefined);
-    const [contextMenuFeaturesData, setContextMenuFeaturesData] = React.useState<DuplicatedFeaturesContextData[]>([]);
+    const [contextMenuFeaturesData, setContextMenuFeaturesData] = React.useState<RepeaterInfoData[]>([]);
     const [contextMenu, setContextMenu] = React.useState<{ mouseX: number; mouseY: number } | null>(null);
     const [layerGroupRepeater, setLayerGroupRepeater] = React.useState<LayerGroup>();
     React.useEffect(() => {
@@ -171,6 +173,7 @@ const OlMap = () => {
                 condition: click,
                 layers: [vectorLayerRepeater],
                 multi: true,
+                hitTolerance: 10,
                 style: selectStyle,
             });
             map.addInteraction(selectClick);
@@ -178,11 +181,12 @@ const OlMap = () => {
 
                 if (e.selected.length > 0) {
                     const [mouseX, mouseY] = e.mapBrowserEvent.pixel;
-                    const arr: DuplicatedFeaturesContextData[] = [];
+                    const arr: RepeaterInfoData[] = [];
                     const featuresData = e.selected.forEach((selectedFeature) => {
                         arr.push(...selectedFeature.getProperties().features.map((feature: any) => feature.getProperties()))
 
-                    });
+                    });debugger
+                    e.preventDefault();
                     setContextMenuFeaturesData(arr);
                     setContextMenu(
                         contextMenu === null
@@ -195,7 +199,7 @@ const OlMap = () => {
                             // With this behavior we prevent contextmenu from the backdrop to re-locale existing context menus.
                             null
                     );
-                    // innoMap?.getInteraction()?.getFeatures().clear();
+                    selectClick.getFeatures().clear();
                 }
             };
 
@@ -204,10 +208,14 @@ const OlMap = () => {
         }
     }, [map, geojson])
 
+    const setRepeaterInfo = (repeaterInfo: RepeaterInfoData) => {
+        setDialogInfo({ open: true, repeaterInfo })
+    }
+    const handlerClose = () => setDialogInfo({ ...dialogInfo, open: false })
     return (
         <div id="map" style={{ width: '100%', height: '100%' }}>
-            <DucplatedFeatureContextMenu contextMenu={contextMenu} setContextMenu={setContextMenu} contextMenuFeaturesData={contextMenuFeaturesData} />
-
+            <DucplatedFeatureContextMenu contextMenu={contextMenu} setContextMenu={setContextMenu} contextMenuFeaturesData={contextMenuFeaturesData} setRepeaterInfo={setRepeaterInfo} />
+            <RepeaterDialog open={dialogInfo.open} onClose={handlerClose} repeaterInfo={dialogInfo.repeaterInfo} />
         </div>
 
     )

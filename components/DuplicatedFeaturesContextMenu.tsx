@@ -1,14 +1,15 @@
 import { ListItemText, Menu, MenuItem } from "@mui/material";
 
-export interface DuplicatedFeaturesContextData { Name: string, Region: string, Tx: number, Rx: number, Callsign: string, Type: string, Note: string, Shift: number, Tone: number, Latitude: number, Longitude: number }
+export interface RepeaterInfoData { Name: string, Region: string, Tx: number, Rx: number, Callsign: string, Type: string, Note: string, Shift: number, Tone: number, Latitude: number, Longitude: number, Address: string }
 
 export interface DucplatedFeatureContextMenuProps {
   contextMenu: { mouseX: number; mouseY: number } | null;
   setContextMenu: (value: { mouseX: number; mouseY: number } | null) => void;
-  contextMenuFeaturesData: DuplicatedFeaturesContextData[];
+  contextMenuFeaturesData: RepeaterInfoData[];
+  setRepeaterInfo: (value: RepeaterInfoData) => void;
 }
 
-export const DucplatedFeatureContextMenu = ({ contextMenu, setContextMenu, contextMenuFeaturesData }: DucplatedFeatureContextMenuProps) => {
+export const DucplatedFeatureContextMenu = ({ contextMenu, setContextMenu, contextMenuFeaturesData, setRepeaterInfo }: DucplatedFeatureContextMenuProps) => {
   // const setDetailProperties = useSetRecoilState(detailPropertiesState);
   // const setDetailViewOpen = useSetRecoilState(openDetailPropertiesDialogState);
 
@@ -21,8 +22,8 @@ export const DucplatedFeatureContextMenu = ({ contextMenu, setContextMenu, conte
       {contextMenu !== null && (
         <Menu
           className="ContextMenu"
-          // open={contextMenu !== null}
-          open
+          open={contextMenu !== null}
+          //open
           onClose={handleClose}
           anchorReference="anchorPosition"
           sx={{ position: "fixed", zIndex: 1200 }}
@@ -30,8 +31,11 @@ export const DucplatedFeatureContextMenu = ({ contextMenu, setContextMenu, conte
             top: Math.floor(contextMenu.mouseY),
             left: Math.floor(contextMenu.mouseX)
           }}
+          defaultChecked={false}
+          defaultValue={undefined}
+
         >
-          {/* <MenuItem disabled>중복된 영역이 존재합니다.</MenuItem> */}
+          <MenuItem disabled>중계기</MenuItem>
           {contextMenuFeaturesData.map((feature, idx) => (
             <MenuItem
               key={idx}
@@ -41,6 +45,8 @@ export const DucplatedFeatureContextMenu = ({ contextMenu, setContextMenu, conte
                 // setDetailProperties({ projectId, detectionId, row });
                 // setDetailViewOpen(true);
                 setContextMenu(null);
+
+                setRepeaterInfo(feature)
                 //}
               }}
             >

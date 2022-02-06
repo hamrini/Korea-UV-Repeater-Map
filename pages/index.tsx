@@ -1,12 +1,12 @@
 import { Box, CssBaseline } from '@mui/material'
+import SearchAppBar from 'components/SearchAppBar'
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import SearchAppBar from 'components/SearchAppBar'
 import styles from 'styles/Home.module.css'
 
 const Home: NextPage = () => {
-  const OlMapWithNoSSR = dynamic(()=> import("components/OlMap"), {ssr:false});
+  const OlMapWithNoSSR = dynamic(() => import("components/OlMap"), { ssr: false });
 
   return (
     <div className={styles.container}>
