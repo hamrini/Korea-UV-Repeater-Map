@@ -19,7 +19,7 @@ export default function RepeaterDialog({ open, repeaterInfo, onClose }: { open: 
                         </TableRow>
                         <TableRow>
                             <TableCell component="th" scope="row">Shift</TableCell>
-                            <TableCell><Chip size="small" color="primary" label={(repeaterInfo?.Rx && repeaterInfo?.Rx) ? repeaterInfo?.Rx - repeaterInfo?.Tx : "-"} /></TableCell>
+                            <TableCell><Chip size="small" color="primary" label={(repeaterInfo?.Rx && repeaterInfo?.Rx) ? (repeaterInfo?.Tx - repeaterInfo?.Rx).toFixed(2) : "-"} /></TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell component="th" scope="row">톤</TableCell>
