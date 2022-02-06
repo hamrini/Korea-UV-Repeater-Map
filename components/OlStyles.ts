@@ -2,14 +2,16 @@ import Feature from 'ol/Feature';
 import { Geometry } from 'ol/geom';
 import 'ol/ol.css';
 import RenderFeature from 'ol/render/Feature';
-import { Circle, Fill, Stroke, Style, Text } from "ol/style";
+import { Circle, Fill, RegularShape, Stroke, Style, Text } from "ol/style";
+import OlMap from './OlMap';
 
 
 export const PointStyle = (feature: RenderFeature | Feature<Geometry>, resolution: number): Style => {
     if (feature !== null && resolution) {
 
         const size = feature.get('features').length;
-        const { Name } = size > 0 ? feature.get('features')[0].getProperties() : "";
+        const { Callsign } = size > 0 ? feature.get('features')[0].getProperties() : "";
+
         return new Style({
             image: (resolution > 300) ?
                 new Circle({
@@ -19,8 +21,8 @@ export const PointStyle = (feature: RenderFeature | Feature<Geometry>, resolutio
                 }) :
                 new Circle({
                     radius: 5,
-                    fill: new Fill({ color: '#ff3333' }),
-                    stroke: new Stroke({ color: '#fff', width: 1 })
+                    fill: new Fill({ color: '#33cc33' }),
+                    stroke: new Stroke({ color: '#f00', width: 1 })
                 })
             , text: (resolution > 300) ?
                 new Text({
@@ -34,7 +36,7 @@ export const PointStyle = (feature: RenderFeature | Feature<Geometry>, resolutio
 
                 }) :
                 new Text({
-                    text: Name ? Name : "",
+                    text: Callsign ? Callsign : "",
                     fill: new Fill({ color: '#ffcc33' }),
                     stroke: new Stroke({ color: '#000', width: 3 }),
                     offsetY: -15,
@@ -46,6 +48,37 @@ export const PointStyle = (feature: RenderFeature | Feature<Geometry>, resolutio
             ,
 
         })
+    } else {
+        return new Style()
+    }
+}
+
+export const PointWAStyle = (feature: RenderFeature | Feature<Geometry>, resolution: number): Style => {
+
+    const { Callsign } = feature.getProperties();
+    if (feature !== null && resolution) {
+
+        return new Style({
+            image:
+                new RegularShape({
+                    points:4,
+                    radius: 5,
+                    fill: new Fill({ color: '#ff3333' }),
+                    stroke: new Stroke({ color: '#fff', width: 1 })
+                })
+            , text:
+                new Text({
+                    text: Callsign ? `[광]${Callsign}` : "",
+                    fill: new Fill({ color: '#ff6666' }),
+                    stroke: new Stroke({ color: '#000', width: 3 }),
+                    offsetY: -15,
+                    font: 'bold 14px "Malgun Gothic", "Apple Gothic", sans-serif',
+                    textAlign: 'center',
+                    textBaseline: 'middle',
+
+                })
+        })
+
     } else {
         return new Style()
     }
