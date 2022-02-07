@@ -1,4 +1,6 @@
-import { ListItemText, Menu, MenuItem } from "@mui/material";
+import { ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
+import CellTowerIcon from '@mui/icons-material/CellTower';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
 
 export interface RepeaterInfoData { Name: string, Region: string, Tx: number, Rx: number, Callsign: string, Type: string, Note: string, Shift: number, Tone: number, Latitude: number, Longitude: number, Address: string }
 
@@ -50,7 +52,10 @@ export const DucplatedFeatureContextMenu = ({ contextMenu, setContextMenu, conte
                 //}
               }}
             >
-              <ListItemText primary={`${feature.Type} (CallSign: ${feature.Callsign})`} secondary={`Tx:${feature.Tx}, Rx:${feature.Rx}, Tone: ${feature.Tone}`} />
+              <ListItemIcon>
+                {feature.Type === "광역망" ? <FlashOnIcon /> : <CellTowerIcon />}
+              </ListItemIcon>
+              <ListItemText primary={`${feature.Type} ${feature?.Name} (CallSign: ${feature.Callsign})`} secondary={`Tx:${feature.Tx}, Rx:${feature.Rx}, Tone: ${feature.Tone}`} />
             </MenuItem>
           ))}
         </Menu>

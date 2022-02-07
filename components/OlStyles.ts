@@ -20,7 +20,7 @@ export const PointStyle = (feature: RenderFeature | Feature<Geometry>, resolutio
                     stroke: new Stroke({ color: '#fff', width: 1 })
                 }) :
                 new Circle({
-                    radius: 5,
+                    radius: 10,
                     fill: new Fill({ color: '#33cc33' }),
                     stroke: new Stroke({ color: '#f00', width: 1 })
                 })
@@ -53,31 +53,44 @@ export const PointStyle = (feature: RenderFeature | Feature<Geometry>, resolutio
     }
 }
 
-export const PointWAStyle = (feature: RenderFeature | Feature<Geometry>, resolution: number): Style => {
+export const PointWAStyle = (feature: RenderFeature | Feature<Geometry>, resolution: number): Style | Style[] => {
 
-    const { Callsign } = feature.getProperties();
+    const { Name,   Callsign } = feature.getProperties();
     if (feature !== null && resolution) {
 
-        return new Style({
+        return [new Style({
             image:
                 new RegularShape({
-                    points:4,
-                    radius: 5,
+                    points: 6,
+                    radius: 12,
                     fill: new Fill({ color: '#ff3333' }),
                     stroke: new Stroke({ color: '#fff', width: 1 })
                 })
             , text:
                 new Text({
-                    text: Callsign ? `[광]${Callsign}` : "",
-                    fill: new Fill({ color: '#ff6666' }),
+                    text: "광",
+                    fill: new Fill({ color: '#FFFFFF' }),
                     stroke: new Stroke({ color: '#000', width: 3 }),
-                    offsetY: -15,
-                    font: 'bold 14px "Malgun Gothic", "Apple Gothic", sans-serif',
+                    offsetY: 1,
+                    font: 'bold 14px "Apple Gothic", "Malgun Gothic",  sans-serif',
                     textAlign: 'center',
                     textBaseline: 'middle',
 
                 })
-        })
+
+        }), new Style({
+            text:
+                new Text({
+                    text: Name ? `${Name}` : "",
+                    fill: new Fill({ color: '#ff6666' }),
+                    stroke: new Stroke({ color: '#000', width: 3 }),
+                    offsetY: 22,
+                    font: 'bold 14px "Apple Gothic", "Malgun Gothic",  sans-serif',
+                    textAlign: 'center',
+                    textBaseline: 'middle',
+
+                })
+        })]
 
     } else {
         return new Style()
