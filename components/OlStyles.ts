@@ -19,10 +19,11 @@ export const PointStyle = (feature: RenderFeature | Feature<Geometry>, resolutio
                     fill: new Fill({ color: size > 30 ? '#ff3333D0' : size > 10 ? '#ffcc33D0' : '#33cc33D0' }),
                     stroke: new Stroke({ color: '#fff', width: 1 })
                 }) :
-                new Circle({
-                    radius: 10,
-                    fill: new Fill({ color: '#33cc33' }),
-                    stroke: new Stroke({ color: '#f00', width: 1 })
+                new RegularShape({
+                    points: 3,
+                    radius: 12,
+                    fill: new Fill({ color: '#33cc33D0' }),
+                    stroke: new Stroke({ color: '#fff', width: 1 })
                 })
             , text: (resolution > 300) ?
                 new Text({
@@ -55,7 +56,7 @@ export const PointStyle = (feature: RenderFeature | Feature<Geometry>, resolutio
 
 export const PointWAStyle = (feature: RenderFeature | Feature<Geometry>, resolution: number): Style | Style[] => {
 
-    const { Name,   Callsign } = feature.getProperties();
+    const { Name, Callsign } = feature.getProperties();
     if (feature !== null && resolution) {
 
         return [new Style({

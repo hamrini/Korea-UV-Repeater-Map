@@ -270,7 +270,7 @@ const OlMap = () => {
 
                         }
 
-                    }); debugger
+                    });
                     e.preventDefault();
                     setContextMenuFeaturesData(arr);
                     setContextMenu(
