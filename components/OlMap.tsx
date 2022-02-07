@@ -150,10 +150,11 @@ const OlMap = () => {
         olmap.addControl(new OLControls.ScaleLine({ units: 'metric' }));
         const groupStyle: GroupSelectStyle = 'children';
         const opts: LsOptions = {
-            reverse: true,
+            reverse: false,
             groupSelectStyle: groupStyle,
             startActive: true,
-            activationMode: 'click'
+            activationMode: 'click',
+
         };
         const layerSwitcher = new LayerSwitcher(opts);
 
@@ -191,7 +192,8 @@ const OlMap = () => {
                         color: '#ff3333',
                         width: 3,
                     }),
-                })
+                }),
+                zIndex: 100
             });
             if (layerGroupRepeaterWideArea) {
                 layerGroupRepeaterWideArea.getLayers().push(layer);
@@ -220,6 +222,7 @@ const OlMap = () => {
 
                 }),
                 style: PointStyle
+                , zIndex: 200
             })
             const vectorLayerRepeaterWideArea = new VectorLayer({
 
@@ -228,7 +231,8 @@ const OlMap = () => {
                         features: new GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).readFeatures(newGeojsonWideArea)
                     }),
 
-                style: PointWAStyle
+                style: PointWAStyle,
+                zIndex: 300
             })
 
             if (layerGroupRepeater) {

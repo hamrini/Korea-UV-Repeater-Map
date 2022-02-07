@@ -3,7 +3,7 @@ import { RepeaterInfoData } from "./DuplicatedFeaturesContextMenu";
 
 export default function RepeaterDialog({ open, repeaterInfo, onClose }: { open: boolean, onClose: () => void, repeaterInfo?: RepeaterInfoData }) {
     return <Dialog open={open} onClose={onClose} >
-        <DialogTitle>{repeaterInfo?.Callsign}</DialogTitle>
+        <DialogTitle>{repeaterInfo?.Name} {repeaterInfo?.Callsign}</DialogTitle>
         <DialogContent>
             <TableContainer component={Paper} elevation={1}>
 
@@ -33,6 +33,10 @@ export default function RepeaterDialog({ open, repeaterInfo, onClose }: { open: 
                         <TableRow>
                             <TableCell component="th" scope="row">주소</TableCell>
                             <TableCell>{repeaterInfo?.Address}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell component="th" scope="row">비고</TableCell>
+                            <TableCell>{repeaterInfo?.Note}</TableCell>
                         </TableRow>
 
                     </TableBody>
