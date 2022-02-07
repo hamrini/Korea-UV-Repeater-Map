@@ -22,7 +22,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main >
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
           <CssBaseline />
           <SearchAppBar />
           <Box sx={{ flexGrow: 1, display: 'flex' }} >

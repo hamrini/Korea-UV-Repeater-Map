@@ -1,7 +1,14 @@
 import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
+import React from "react";
 import { RepeaterInfoData } from "./DuplicatedFeaturesContextMenu";
 
 export default function RepeaterDialog({ open, repeaterInfo, onClose }: { open: boolean, onClose: () => void, repeaterInfo?: RepeaterInfoData }) {
+
+    const shift = React.useMemo(() => {
+        return repeaterInfo?.Tx && repeaterInfo?.Rx ? (repeaterInfo?.Tx - repeaterInfo?.Rx) : 0
+    }, [repeaterInfo]);
+
+
     return <Dialog open={open} onClose={onClose} >
         <DialogTitle>{repeaterInfo?.Name} {repeaterInfo?.Callsign}</DialogTitle>
         <DialogContent>
@@ -19,7 +26,7 @@ export default function RepeaterDialog({ open, repeaterInfo, onClose }: { open: 
                         </TableRow>
                         <TableRow>
                             <TableCell component="th" scope="row">Shift</TableCell>
-                            <TableCell><Chip size="small" color="primary" label={(repeaterInfo?.Rx && repeaterInfo?.Rx) ? (repeaterInfo?.Tx - repeaterInfo?.Rx).toFixed(2) : "-"} /></TableCell>
+                            <TableCell><Chip size="small" color="primary" label={(shift > 0 )? `+${shift.toFixed(2)}` : shift.toFixed(2)} /></TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell component="th" scope="row">톤</TableCell>
