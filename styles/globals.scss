@@ -4,7 +4,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
 }
 
 a {
@@ -31,4 +32,20 @@ a {
 }
 .layer-switcher.shown.layer-switcher-activation-mode-click {
   padding-left: 45px !important;
+}
+
+.currentPosition {
+  top: 95px;
+  left: 0.5em;
+}
+
+.fa-solid.fa-crosshairs {
+  width: 24px;
+  background: #fff;
+  mask-image: url(/images/crosshairs-solid.svg);
+  height: 24px;
+  display: inline-block;
+}
+.control-hidden{
+  display: none;
 }

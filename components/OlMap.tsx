@@ -1,12 +1,14 @@
 import csvToGeojson from 'csv-geojson-conv';
 import { GeoJsonObject, Point as GeoPoint, LineString as GeoPolyline, FeatureCollection } from "geojson";
+import { RotateNorthControl } from 'lib/curruntPosControl';
 import * as ol from 'ol';
 import LayerSwitcher, {
     BaseLayerOptions,
     GroupLayerOptions, GroupSelectStyle, Options as LsOptions
 } from "ol-layerswitcher";
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
-import * as OLControls from 'ol/control';
+import { Control, defaults as defaultControls, ScaleLine } from 'ol/control';
+
 import { click } from 'ol/events/condition';
 import Feature from 'ol/Feature';
 import GeoJSON, { GeoJSONFeatureCollection } from "ol/format/GeoJSON";
@@ -145,9 +147,10 @@ const OlMap = () => {
                     ]
                 } as GroupLayerOptions),
 
-            ], view
+            ], view,
+            controls: defaultControls().extend([new RotateNorthControl()])
         });
-        olmap.addControl(new OLControls.ScaleLine({ units: 'metric' }));
+        olmap.addControl(new ScaleLine({ units: 'metric' }));
         const groupStyle: GroupSelectStyle = 'children';
         const opts: LsOptions = {
             reverse: false,
