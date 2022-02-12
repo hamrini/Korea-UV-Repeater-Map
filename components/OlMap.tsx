@@ -189,7 +189,7 @@ const OlMap = () => {
                 source: source,
                 style: new Style({
                     stroke: new Stroke({
-                        color: '#ff3333',
+                        color: '#F20CEFA0',
                         width: 3,
                     }),
                 }),

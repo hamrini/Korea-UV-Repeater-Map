@@ -1,4 +1,5 @@
-import { Box, CssBaseline } from '@mui/material'
+import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material'
+import Footer from 'components/Footer'
 import SearchAppBar from 'components/SearchAppBar'
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
@@ -7,7 +8,16 @@ import styles from 'styles/Home.module.css'
 
 const Home: NextPage = () => {
   const OlMapWithNoSSR = dynamic(() => import("components/OlMap"), { ssr: false });
-
+  const hamMapTheme = createTheme({
+    palette: {
+      primary: {
+        main: 'rgb(33, 195, 249)',
+      },  // red  
+      secondary: {
+        main: 'rgb(242, 12, 239)',
+      },  // red
+    },
+  })
   return (
     <div className={styles.container}>
       <Head>
@@ -22,15 +32,18 @@ const Home: NextPage = () => {
       </Head>
 
       <main >
-        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-          <CssBaseline />
-          <SearchAppBar />
-          <Box sx={{ flexGrow: 1, display: 'flex' }} >
-            <Box sx={{ flexGrow: 1 }}>
-              <OlMapWithNoSSR />
+        <ThemeProvider theme={hamMapTheme}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+            <CssBaseline />
+            <SearchAppBar />
+            <Box sx={{ flexGrow: 1, display: 'flex' }} >
+              <Box sx={{ flexGrow: 1 }}>
+                <OlMapWithNoSSR />
+              </Box>
             </Box>
+            <Footer />
           </Box>
-        </Box>
+        </ThemeProvider>
       </main>
     </div>
   )
