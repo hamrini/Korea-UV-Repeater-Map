@@ -37,6 +37,11 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
 }));
 
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+    background: `linear-gradient(45deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.light} 100%)`,
+
+}));
+
 const StyledInputBase = styled(TextField)(({ theme }) => ({
     color: 'inherit',
     //'& .MuiTextField-root': { padding: 0 },
@@ -46,7 +51,7 @@ const StyledInputBase = styled(TextField)(({ theme }) => ({
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create('width'),
         // width: '100%',
-        border: '1px solid #f00',
+        border: `1px solid ${theme.palette.divider}`,
 
         //[theme.breakpoints.up('sm')]: {
         width: '30ch',
@@ -57,6 +62,8 @@ const StyledInputBase = styled(TextField)(({ theme }) => ({
 
     },
 }));
+
+
 interface IProperties { Latitute: number, Longitude: number, Region: string, Name: string, Rx: Number, Tx: number, Tone: number, Shift: number, Note: string, Type: string }
 
 interface IFeature { type: string, properties: IProperties, geometry: any }
@@ -93,8 +100,7 @@ export default function SearchAppBar() {
         });
     }, [])
     return (
-
-        <AppBar position="static">
+        <StyledAppBar position="static">
             <Toolbar>
                 <IconButton
                     size="large"
@@ -113,7 +119,7 @@ export default function SearchAppBar() {
                 >
                     Korean Amateur Radio UV Repeater Map
                 </Typography>
-                <Search>
+                {false  && <Search>
                     <SearchIconWrapper>
                         <SearchIcon />
                     </SearchIconWrapper>
@@ -140,21 +146,20 @@ export default function SearchAppBar() {
                             <StyledInputBase
                                 {...params}
                                 label="검색"
-                                // InputProps={{
-                                //     ...params.InputProps,
-                                //     //xtype: 'search',
-                                // }}
-                                color="secondary"
+                                InputProps={{
+                                    ...params.InputProps,
+                                    //xtype: 'search',
+                                }}
+                                color="primary"
                                 size="small"
-
 
 
                             />
                         )}
                     />
 
-                </Search>
+                </Search>}
             </Toolbar>
-        </AppBar>
+        </StyledAppBar>
     );
 }

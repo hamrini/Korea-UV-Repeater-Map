@@ -41,7 +41,7 @@ export const PointStyle = (feature: RenderFeature | Feature<Geometry>, resolutio
                     fill: new Fill({ color: '#ffcc33' }),
                     stroke: new Stroke({ color: '#000', width: 3 }),
                     offsetY: -15,
-                    font: 'bold 14px "Malgun Gothic", "Apple Gothic", sans-serif',
+                    font: 'bold 14px Pretendard, "Malgun Gothic", "Apple Gothic", sans-serif',
                     textAlign: 'center',
                     textBaseline: 'middle',
 
@@ -73,7 +73,7 @@ export const PointWAStyle = (feature: RenderFeature | Feature<Geometry>, resolut
                     fill: new Fill({ color: '#FFFFFF' }),
                     stroke: new Stroke({ color: '#000', width: 3 }),
                     offsetY: 1,
-                    font: 'bold 14px "Apple Gothic", "Malgun Gothic",  sans-serif',
+                    font: 'bold 14px Pretendard, "Apple Gothic", "Malgun Gothic",  sans-serif',
                     textAlign: 'center',
                     textBaseline: 'middle',
 
@@ -86,7 +86,7 @@ export const PointWAStyle = (feature: RenderFeature | Feature<Geometry>, resolut
                     fill: new Fill({ color: '#ff6666' }),
                     stroke: new Stroke({ color: '#000', width: 3 }),
                     offsetY: 22,
-                    font: 'bold 14px "Apple Gothic", "Malgun Gothic",  sans-serif',
+                    font: 'bold 14px Pretendard, "Apple Gothic", "Malgun Gothic",  sans-serif',
                     textAlign: 'center',
                     textBaseline: 'middle',
 
