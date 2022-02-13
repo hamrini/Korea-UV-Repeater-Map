@@ -7,7 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
-import { Autocomplete, Box, CircularProgress, TextField } from '@mui/material';
+import { Autocomplete, Box, CircularProgress, PaperProps, TextField } from '@mui/material';
 import csvToGeojson from 'csv-geojson-conv';
 import { GeoJsonObject } from 'geojson';
 
@@ -68,7 +68,11 @@ interface IProperties { Latitute: number, Longitude: number, Region: string, Nam
 
 interface IFeature { type: string, properties: IProperties, geometry: any }
 
-export default function SearchAppBar() {
+interface SearchAppBarProps extends PaperProps {
+    handleDrawerToggle: () => void
+}
+
+export default function SearchAppBar({ handleDrawerToggle, sx }: SearchAppBarProps) {
     const [geojson, setGeojson] = React.useState<GeoJsonObject | undefined>(undefined);
     const [options, setOptions] = React.useState<IProperties[]>([]);
     React.useEffect(() => {
@@ -100,14 +104,15 @@ export default function SearchAppBar() {
         });
     }, [])
     return (
-        <StyledAppBar position="static">
+        <StyledAppBar position="static" sx={sx}>
             <Toolbar>
                 <IconButton
                     size="large"
                     edge="start"
                     color="inherit"
                     aria-label="open drawer"
-                    sx={{ mr: 2 }}
+                    sx={{ mr: 2, display: { sm: 'none' } }}
+                    onClick={handleDrawerToggle}
                 >
                     <MenuIcon />
                 </IconButton>
@@ -115,11 +120,11 @@ export default function SearchAppBar() {
                     variant="h6"
                     noWrap
                     component="div"
-                    sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                //sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                 >
                     Korean Amateur Radio UV Repeater Map
                 </Typography>
-                {false  && <Search>
+                {false && <Search>
                     <SearchIconWrapper>
                         <SearchIcon />
                     </SearchIconWrapper>

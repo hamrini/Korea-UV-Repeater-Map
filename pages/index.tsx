@@ -1,4 +1,4 @@
-import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material'
+import { Box, CssBaseline, ThemeProvider, createTheme, Drawer, Toolbar, Divider, List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
 import Footer from 'components/Footer'
 import SearchAppBar from 'components/SearchAppBar'
 import type { NextPage } from 'next'
@@ -6,18 +6,47 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import styles from 'styles/Home.module.css'
 
+const drawerWidth = 240;
+import React from 'react'
+import { DrawerContents } from 'components/DrawerContents'
+interface Props {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window?: () => Window;
+}
+const hamMapTheme = createTheme({
+  palette: {
+    primary: {
+      main: 'rgb(33, 195, 249)',
+    },  // red  
+    secondary: {
+      main: 'rgb(242, 12, 239)',
+    },  // red
+  },
+})
+
+
 const Home: NextPage = () => {
   const OlMapWithNoSSR = dynamic(() => import("components/OlMap"), { ssr: false });
-  const hamMapTheme = createTheme({
-    palette: {
-      primary: {
-        main: 'rgb(33, 195, 249)',
-      },  // red  
-      secondary: {
-        main: 'rgb(242, 12, 239)',
-      },  // red
-    },
-  })
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [container, setContainer] = React.useState<HTMLElement | undefined>(undefined);
+
+
+
+
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+  React.useEffect(() => {
+    const container = window !== undefined ? () => window.document.body : undefined;
+    setContainer(container);
+    // 안에서 window 객체를 사용
+  }, [])
+
+
   return (
     <div className={styles.container}>
       <Head>
@@ -35,17 +64,58 @@ const Home: NextPage = () => {
         <ThemeProvider theme={hamMapTheme}>
           <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
             <CssBaseline />
-            <SearchAppBar />
-            <Box sx={{ flexGrow: 1, display: 'flex' }} >
+            <SearchAppBar handleDrawerToggle={handleDrawerToggle}
+              sx={{
+                width: { sm: `calc(100% - ${drawerWidth}px)` },
+                ml: { sm: `${drawerWidth}px` },
+              }} />
+            <Box
+              component="nav"
+              sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+              aria-label="mailbox folders"
+            >
+              {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+              <Drawer
+                container={container}
+                variant="temporary"
+                open={mobileOpen}
+                onClose={handleDrawerToggle}
+                ModalProps={{
+                  keepMounted: true, // Better open performance on mobile.
+                }}
+                sx={{
+                  display: { xs: 'block', sm: 'none' },
+                  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                }}
+              >
+                {DrawerContents}
+              </Drawer>
+              <Drawer
+                variant="permanent"
+                sx={{
+                  display: { xs: 'none', sm: 'block' },
+                  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                }}
+                open
+              >
+                {DrawerContents}
+              </Drawer>
+            </Box>
+            <Box sx={{
+              flexGrow: 1, display: 'flex',
+              width: { sm: `calc(100% - ${drawerWidth}px)` },
+              ml: {
+                sm: `${drawerWidth}px`
+              }
+            }} >
               <Box sx={{ flexGrow: 1 }}>
                 <OlMapWithNoSSR />
               </Box>
             </Box>
-            <Footer />
           </Box>
         </ThemeProvider>
       </main>
-    </div>
+    </div >
   )
 }
 
